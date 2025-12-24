@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "dougdoug-mugmug:item/mug_mug_spawn_egg"
+  }
+}

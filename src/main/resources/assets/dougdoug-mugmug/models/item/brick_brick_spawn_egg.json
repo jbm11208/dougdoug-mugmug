@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "dougdoug-mugmug:item/brick_brick_spawn_egg"
+  }
+}

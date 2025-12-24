@@ -1,0 +1,31 @@
+{
+	"schemaVersion": 1,
+	"id": "dougdoug-mugmug",
+	"version": "${version}",
+	"name": "DougDoug MugMug",
+	"description": "A mod that adds the DougDoug MugMugs into Minecraft",
+	"authors": [
+		"jbm11208"
+	],
+	"contact": {
+		"homepage": "https://github.com/jbm11208/dougdoug-mugmug",
+		"sources": "https://github.com/jbm11208/dougdoug-mugmug"
+	},
+	"license": "CC0-1.0",
+	"icon": "assets/dougdoug-mugmug/icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+			"doug.mug.DougDougMugMug"
+		],
+		"client": [
+			"doug.mug.DougDougMugMugClient"
+		]
+	},
+	"depends": {
+		"fabricloader": ">=0.18.3",
+		"minecraft": "~1.21.10",
+		"java": ">=21",
+		"fabric-api": "*"
+	}
+}
