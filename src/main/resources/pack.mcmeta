@@ -1,7 +1,6 @@
 {
   "pack": {
     "description": "Resources for MugMug",
-    "max_format": 88,
-    "min_format": 88
+    "pack_format": 34
   }
 }

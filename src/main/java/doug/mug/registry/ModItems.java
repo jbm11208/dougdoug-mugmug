@@ -2,17 +2,13 @@ package doug.mug.registry;
 
 import doug.mug.DougDougMugMug;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
-import net.minecraft.component.DataComponentTypes;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.TypedEntityData;
+import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroups;
 import net.minecraft.item.SpawnEggItem;
-import net.minecraft.nbt.NbtCompound;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
-import net.minecraft.registry.RegistryKey;
-import net.minecraft.registry.RegistryKeys;
 import net.minecraft.util.Identifier;
 
 public final class ModItems {
@@ -31,16 +27,12 @@ public final class ModItems {
         });
     }
 
-    private static Item registerSpawnEgg(String path, EntityType<?> entityType) {
+    private static Item registerSpawnEgg(String path, EntityType<? extends MobEntity> entityType) {
         Identifier id = Identifier.of(DougDougMugMug.MOD_ID, path);
-        RegistryKey<Item> key = RegistryKey.of(RegistryKeys.ITEM, id);
-        NbtCompound extraNbt = new NbtCompound();
 
-        Item.Settings settings = new Item.Settings()
-                .registryKey(key)
-                .component(DataComponentTypes.ENTITY_DATA, TypedEntityData.create(entityType, extraNbt));
+        Item.Settings settings = new Item.Settings();
 
-        Item egg = new SpawnEggItem(settings);
+        Item egg = new SpawnEggItem(entityType, 0xFFFFFF, 0xFFFFFF, settings);
         return Registry.register(Registries.ITEM, id, egg);
     }
 

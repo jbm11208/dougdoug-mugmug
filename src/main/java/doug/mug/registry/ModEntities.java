@@ -21,34 +21,33 @@ public final class ModEntities {
 
 	public static final EntityType<BrickBrickEntity> BRICK_BRICK = Registry.register(
 			Registries.ENTITY_TYPE,
-			id("brick_brick"),
-			EntityType.Builder.<BrickBrickEntity>create(BrickBrickEntity::new, SpawnGroup.CREATURE)
+			Identifier.of(DougDougMugMug.MOD_ID, "brick_brick"),
+			EntityType.Builder.create(BrickBrickEntity::new, SpawnGroup.CREATURE)
 					.dimensions(1.0f, 2.0f)
-					.build(RegistryKey.of(Registries.ENTITY_TYPE.getKey(), id("brick_brick")))
-	);
+					.build());
 
 	public static final EntityType<MugMugEntity> MUG_MUG = Registry.register(
 			Registries.ENTITY_TYPE,
-			id("mug_mug"),
-			EntityType.Builder.<MugMugEntity>create(MugMugEntity::new, SpawnGroup.CREATURE)
+			Identifier.of(DougDougMugMug.MOD_ID, "mug_mug"),
+			EntityType.Builder.create(MugMugEntity::new, SpawnGroup.CREATURE)
 					.dimensions(3.5f, 2.25f)
-					.build(RegistryKey.of(Registries.ENTITY_TYPE.getKey(), id("mug_mug")))
+					.build()
 	);
 
 	public static final EntityType<CowCowEntity> COW_COW = Registry.register(
 			Registries.ENTITY_TYPE,
-			id("cow_cow"),
-			EntityType.Builder.<CowCowEntity>create(CowCowEntity::new, SpawnGroup.CREATURE)
+			Identifier.of(DougDougMugMug.MOD_ID, "cow_cow"),
+			EntityType.Builder.create(CowCowEntity::new, SpawnGroup.CREATURE)
 					.dimensions(0.9f, 1.4f)
-					.build(RegistryKey.of(Registries.ENTITY_TYPE.getKey(), id("cow_cow")))
+					.build()
 	);
 
 	public static final EntityType<MelonMelonEntity> MELON_MELON = Registry.register(
 			Registries.ENTITY_TYPE,
-			id("melon_melon"),
-			EntityType.Builder.<MelonMelonEntity>create(MelonMelonEntity::new, SpawnGroup.CREATURE)
+			Identifier.of(DougDougMugMug.MOD_ID, "melon_melon"),
+			EntityType.Builder.create(MelonMelonEntity::new, SpawnGroup.CREATURE)
 					.dimensions(0.9f, 1.3f)
-					.build(RegistryKey.of(Registries.ENTITY_TYPE.getKey(), id("melon_melon")))
+					.build()
 	);
 
 	public static void registerAll() {
@@ -82,10 +81,10 @@ public final class ModEntities {
 		return Identifier.of(DougDougMugMug.MOD_ID, path);
 	}
 
-	public static BrickBrickEntity createBrickBrickChild(ServerWorld world) { return BRICK_BRICK.create(world, SpawnReason.NATURAL); }
-	public static MugMugEntity createMugMugChild(ServerWorld world) { return MUG_MUG.create(world, SpawnReason.NATURAL); }
-	public static CowCowEntity createCowCowChild(ServerWorld world) { return COW_COW.create(world, SpawnReason.NATURAL); }
-	public static MelonMelonEntity createMelonMelonChild(ServerWorld world) { return MELON_MELON.create(world, SpawnReason.NATURAL); }
+	public static BrickBrickEntity createBrickBrickChild(ServerWorld world) { return BRICK_BRICK.create(world); }
+	public static MugMugEntity createMugMugChild(ServerWorld world) { return MUG_MUG.create(world); }
+	public static CowCowEntity createCowCowChild(ServerWorld world) { return COW_COW.create(world); }
+	public static MelonMelonEntity createMelonMelonChild(ServerWorld world) { return MELON_MELON.create(world); }
 
 	private ModEntities() {}
 }

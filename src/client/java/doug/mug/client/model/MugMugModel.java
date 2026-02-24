@@ -4,18 +4,20 @@
 
 package doug.mug.client.model;
 
-import doug.mug.client.render.state.MugMugRenderState;
+import doug.mug.entity.MugMugEntity;
 import net.minecraft.client.model.*;
-import net.minecraft.client.render.entity.model.EntityModel;
+import net.minecraft.client.render.VertexConsumer;
+import net.minecraft.client.render.entity.model.SinglePartEntityModel;
+import net.minecraft.client.util.math.MatrixStack;
 
-public class MugMugModel extends EntityModel<MugMugRenderState> {
+public class MugMugModel<T extends MugMugEntity> extends SinglePartEntityModel<T> {
+    private final ModelPart bb_main;
     public MugMugModel(ModelPart root) {
-        super(root);
+        this.bb_main = root.getChild("bb_main");
     }
     public static TexturedModelData getTexturedModelData() {
         ModelData modelData = new ModelData();
         ModelPartData modelPartData = modelData.getRoot();
-
         ModelPartData bb_main = modelPartData.addChild("bb_main", ModelPartBuilder.create().uv(0, 0).cuboid(-12.0F, -2.0F, -15.0F, 4.0F, 2.0F, 4.0F, new Dilation(0.0F))
                 .uv(0, 5).cuboid(-12.0F, -6.0F, -19.0F, 4.0F, 4.0F, 4.0F, new Dilation(0.0F))
                 .uv(0, 5).cuboid(-12.0F, -6.0F, -11.0F, 4.0F, 4.0F, 4.0F, new Dilation(0.0F))
@@ -91,7 +93,7 @@ public class MugMugModel extends EntityModel<MugMugRenderState> {
                 .uv(87, 110).cuboid(8.0F, -20.0F, -25.0F, 2.0F, 2.0F, 2.0F, new Dilation(0.0F))
                 .uv(3, 120).cuboid(6.0F, -22.0F, -25.0F, 2.0F, 6.0F, 2.0F, new Dilation(0.0F))
                 .uv(3, 120).cuboid(14.0F, -22.0F, -23.0F, 2.0F, 6.0F, 2.0F, new Dilation(0.0F))
-                .uv(86, 117).cuboid(6.0F, -24.0F, -23.0F, 8.0F, 2.0F, 2.0F, new Dilation(0.0F)), ModelTransform.of(0.0F, 24.0F, 0.0F, 0.0F, 0.0F, 0.0F));
+                .uv(86, 117).cuboid(6.0F, -24.0F, -23.0F, 8.0F, 2.0F, 2.0F, new Dilation(0.0F)), ModelTransform.pivot(0.0F, 24.0F, 0.0F));
 
         bb_main.addChild("cube_r1", ModelPartBuilder.create().uv(0, 0).cuboid(4.0F, -10.0F, 4.0F, 12.0F, 2.0F, 12.0F, new Dilation(0.0F))
                 .uv(64, 110).cuboid(2.0F, -30.0F, 2.0F, 16.0F, 2.0F, 16.0F, new Dilation(0.0F))
@@ -271,5 +273,17 @@ public class MugMugModel extends EntityModel<MugMugRenderState> {
                 .uv(0, 5).cuboid(-6.0F, 10.0F, -2.0F, 4.0F, 4.0F, 4.0F, new Dilation(0.0F))
                 .uv(0, 5).cuboid(2.0F, 10.0F, -2.0F, 4.0F, 4.0F, 4.0F, new Dilation(0.0F)), ModelTransform.of(10.0F, -16.0F, 7.0F, 0.0F, 3.1416F, 0.0F));
         return TexturedModelData.of(modelData, 128, 128);
+    }
+    @Override
+    public void setAngles(MugMugEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+    }
+    @Override
+    public void render(MatrixStack matrices, VertexConsumer vertexConsumer, int light, int overlay, int color) {
+        bb_main.render(matrices, vertexConsumer, light, overlay, color);
+    }
+
+    @Override
+    public ModelPart getPart() {
+        return bb_main;
     }
 }

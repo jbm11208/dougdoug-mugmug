@@ -4,19 +4,20 @@
 
 package doug.mug.client.model;
 
-import doug.mug.client.render.state.CowCowRenderState;
+import doug.mug.entity.CowCowEntity;
 import net.minecraft.client.model.*;
-import net.minecraft.client.render.entity.model.EntityModel;
+import net.minecraft.client.render.VertexConsumer;
+import net.minecraft.client.render.entity.model.SinglePartEntityModel;
+import net.minecraft.client.util.math.MatrixStack;
 
-public class CowCowModel extends EntityModel<CowCowRenderState> {
-
+public class CowCowModel<T extends CowCowEntity> extends SinglePartEntityModel<T> {
+    private final ModelPart bb_main;
     public CowCowModel(ModelPart root) {
-        super(root);
+        this.bb_main = root.getChild("bb_main");
     }
     public static TexturedModelData getTexturedModelData() {
         ModelData modelData = new ModelData();
         ModelPartData modelPartData = modelData.getRoot();
-
         ModelPartData bb_main = modelPartData.addChild("bb_main", ModelPartBuilder.create().uv(3, 104).cuboid(-12.0F, -2.0F, -12.0F, 4.0F, 2.0F, 4.0F, new Dilation(0.0F))
                 .uv(69, 104).cuboid(-12.0F, -6.0F, -16.0F, 4.0F, 4.0F, 4.0F, new Dilation(0.0F))
                 .uv(0, 105).cuboid(-12.0F, -6.0F, -8.0F, 4.0F, 4.0F, 4.0F, new Dilation(0.0F))
@@ -114,7 +115,7 @@ public class CowCowModel extends EntityModel<CowCowRenderState> {
                 .uv(69, 104).cuboid(22.0F, -30.0F, -12.0F, 2.0F, 4.0F, 4.0F, new Dilation(0.0F))
                 .uv(18, 75).cuboid(18.0F, -30.0F, -12.0F, 4.0F, 4.0F, 2.0F, new Dilation(0.0F))
                 .uv(20, 75).cuboid(16.0F, -30.0F, -12.0F, 2.0F, 2.0F, 2.0F, new Dilation(0.0F))
-                .uv(69, 104).cuboid(16.0F, -32.0F, -12.0F, 6.0F, 2.0F, 4.0F, new Dilation(0.0F)), ModelTransform.of(0.0F, 24.0F, 0.0F, 0.0F, 0.0F, 0.0F));
+                .uv(69, 104).cuboid(16.0F, -32.0F, -12.0F, 6.0F, 2.0F, 4.0F, new Dilation(0.0F)), ModelTransform.pivot(0.0F, 24.0F, 0.0F));
 
         bb_main.addChild("cube_r1", ModelPartBuilder.create().uv(97, 48).cuboid(-2.0F, -14.0F, -4.0F, 4.0F, 6.0F, 2.0F, new Dilation(0.0F))
                 .uv(96, 47).cuboid(-2.0F, -8.0F, -6.0F, 4.0F, 2.0F, 4.0F, new Dilation(0.0F))
@@ -338,5 +339,17 @@ public class CowCowModel extends EntityModel<CowCowRenderState> {
 
         bb_main.addChild("cube_r10", ModelPartBuilder.create().uv(14, 105).cuboid(8.0F, 2.0F, -6.0F, 4.0F, 2.0F, 8.0F, new Dilation(0.0F)), ModelTransform.of(10.0F, -34.0F, 12.0F, 0.0F, 3.1416F, 0.0F));
         return TexturedModelData.of(modelData, 128, 128);
+    }
+    @Override
+    public void setAngles(CowCowEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+    }
+    @Override
+    public void render(MatrixStack matrices, VertexConsumer vertexConsumer, int light, int overlay, int color) {
+        bb_main.render(matrices, vertexConsumer, light, overlay, color);
+    }
+
+    @Override
+    public ModelPart getPart() {
+        return bb_main;
     }
 }

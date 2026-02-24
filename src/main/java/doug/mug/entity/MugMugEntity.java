@@ -58,7 +58,7 @@ public class MugMugEntity extends AbstractHorseEntity {
      * getControllingPassenger(), but we keep this to match your intent.
      */
     public boolean hasSaddleEquipped() {
-        return this.hasStackEquipped(EquipmentSlot.BODY);
+        return this.hasStackEquipped(EquipmentSlot.CHEST);
     }
 
     @Override
@@ -107,7 +107,7 @@ public class MugMugEntity extends AbstractHorseEntity {
                     held.decrementUnlessCreative(1, player);
 
                     // Equip a real saddle so vanilla GUI/control logic works
-                    this.equipStack(EquipmentSlot.BODY, new ItemStack(Items.SADDLE));
+                    this.equipStack(EquipmentSlot.CHEST, new ItemStack(Items.SADDLE));
                 }
                 return ActionResult.SUCCESS;
             }
