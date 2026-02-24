@@ -34,9 +34,9 @@ public class MugMugEntity extends AbstractHorseEntity {
     }
 
     public static DefaultAttributeContainer.Builder createAttributes() {
-        return AnimalEntity.createAnimalAttributes()
-                .add(EntityAttributes.MAX_HEALTH, 20.0D)
-                .add(EntityAttributes.MOVEMENT_SPEED, 0.25D);
+        return AnimalEntity.createMobAttributes()
+                .add(EntityAttributes.GENERIC_MAX_HEALTH, 20.0D)
+                .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.25D);
     }
 
     @Override
@@ -57,9 +57,8 @@ public class MugMugEntity extends AbstractHorseEntity {
      * NOTE: AbstractHorseEntity already does a similar check in its own
      * getControllingPassenger(), but we keep this to match your intent.
      */
-    @Override
     public boolean hasSaddleEquipped() {
-        return this.hasStackEquipped(EquipmentSlot.SADDLE);
+        return this.hasStackEquipped(EquipmentSlot.BODY);
     }
 
     @Override
@@ -108,7 +107,7 @@ public class MugMugEntity extends AbstractHorseEntity {
                     held.decrementUnlessCreative(1, player);
 
                     // Equip a real saddle so vanilla GUI/control logic works
-                    this.equipStack(EquipmentSlot.SADDLE, new ItemStack(Items.SADDLE));
+                    this.equipStack(EquipmentSlot.BODY, new ItemStack(Items.SADDLE));
                 }
                 return ActionResult.SUCCESS;
             }
