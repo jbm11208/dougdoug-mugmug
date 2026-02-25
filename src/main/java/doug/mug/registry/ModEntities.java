@@ -12,10 +12,9 @@ import net.minecraft.entity.*;
 import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
-import net.minecraft.registry.RegistryKey;
-import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.Heightmap;
+import net.minecraft.world.biome.BiomeKeys;
 
 public final class ModEntities {
 
@@ -71,20 +70,11 @@ public final class ModEntities {
 	}
 
 	private static void registerBiomeSpawns() {
-		BiomeModifications.addSpawn(BiomeSelectors.foundInOverworld(), SpawnGroup.CREATURE, BRICK_BRICK, 8, 2, 4);
-		BiomeModifications.addSpawn(BiomeSelectors.foundInOverworld(), SpawnGroup.CREATURE, MUG_MUG, 10, 2, 4);
-		BiomeModifications.addSpawn(BiomeSelectors.foundInOverworld(), SpawnGroup.CREATURE, COW_COW, 6, 1, 3);
-		BiomeModifications.addSpawn(BiomeSelectors.foundInOverworld(), SpawnGroup.CREATURE, MELON_MELON, 9, 2, 4);
+		BiomeModifications.addSpawn(BiomeSelectors.includeByKey(BiomeKeys.STONY_SHORE, BiomeKeys.STONY_PEAKS, BiomeKeys.BADLANDS), SpawnGroup.CREATURE, BRICK_BRICK, 8, 2, 4);
+		BiomeModifications.addSpawn(BiomeSelectors.includeByKey(BiomeKeys.OCEAN, BiomeKeys.DEEP_OCEAN, BiomeKeys.RIVER), SpawnGroup.CREATURE, MUG_MUG, 10, 2, 4);
+		BiomeModifications.addSpawn(BiomeSelectors.includeByKey(BiomeKeys.PLAINS, BiomeKeys.FOREST, BiomeKeys.SAVANNA, BiomeKeys.TAIGA), SpawnGroup.CREATURE, COW_COW, 6, 1, 3);
+		BiomeModifications.addSpawn(BiomeSelectors.includeByKey(BiomeKeys.JUNGLE, BiomeKeys.SPARSE_JUNGLE, BiomeKeys.BAMBOO_JUNGLE), SpawnGroup.CREATURE, MELON_MELON, 9, 2, 4);
 	}
-
-	public static Identifier id(String path) {
-		return Identifier.of(DougDougMugMug.MOD_ID, path);
-	}
-
-	public static BrickBrickEntity createBrickBrickChild(ServerWorld world) { return BRICK_BRICK.create(world); }
-	public static MugMugEntity createMugMugChild(ServerWorld world) { return MUG_MUG.create(world); }
-	public static CowCowEntity createCowCowChild(ServerWorld world) { return COW_COW.create(world); }
-	public static MelonMelonEntity createMelonMelonChild(ServerWorld world) { return MELON_MELON.create(world); }
 
 	private ModEntities() {}
 }

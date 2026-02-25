@@ -1,6 +1,5 @@
 package doug.mug.entity;
 
-import doug.mug.registry.ModEntities;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -26,6 +25,7 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
+import static doug.mug.registry.ModEntities.MELON_MELON;
 
 public class MelonMelonEntity extends AbstractHorseEntity {
 
@@ -53,18 +53,18 @@ public class MelonMelonEntity extends AbstractHorseEntity {
     /**
      * Hard-lock steering. Even if something mounts you via commands/mods,
      * player control won’t work unless tame + saddle equipped.
-     *
+     * <p>
      * NOTE: AbstractHorseEntity already does a similar check in its own
      * getControllingPassenger(), but we keep this to match your intent.
      */
     public boolean hasSaddleEquipped() {
-        return this.hasStackEquipped(EquipmentSlot.CHEST);
+        return !this.hasStackEquipped(EquipmentSlot.CHEST);
     }
 
     @Override
     @Nullable
     public LivingEntity getControllingPassenger() {
-        if (!this.isTame() || !this.hasSaddleEquipped()) {
+        if (!this.isTame() || this.hasSaddleEquipped()) {
             return null;
         }
         Entity first = this.getFirstPassenger();
@@ -101,7 +101,7 @@ public class MelonMelonEntity extends AbstractHorseEntity {
         }
 
         // 2) “Saddling” with MELON (internally equips a real saddle)
-        if (!this.hasSaddleEquipped()) {
+        if (this.hasSaddleEquipped()) {
             if (held.isOf(Blocks.MELON.asItem())) {
                 if (!this.getEntityWorld().isClient()) {
                     held.decrementUnlessCreative(1, player);
@@ -128,6 +128,6 @@ public class MelonMelonEntity extends AbstractHorseEntity {
 
     @Override
     public PassiveEntity createChild(ServerWorld world, PassiveEntity mate) {
-        return ModEntities.createMelonMelonChild(world);
+        return MELON_MELON.create(world);
     }
 }

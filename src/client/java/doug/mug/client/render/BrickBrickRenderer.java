@@ -11,7 +11,6 @@ import net.minecraft.util.Identifier;
 public class BrickBrickRenderer extends MobEntityRenderer<BrickBrickEntity, BrickBrickModel<BrickBrickEntity>> {
 
     private static final Identifier TEXTURE = Identifier.of("dougdoug-mugmug", "textures/entity/brick_brick.png");
-    private static final float MODEL_SCALE = 1.0f;
 
     public BrickBrickRenderer(EntityRendererFactory.Context ctx) {
         super(ctx, new BrickBrickModel<>(ctx.getPart(ModModelLayers.BRICK_BRICK)), 0.2f);
