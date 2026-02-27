@@ -20,10 +20,11 @@ public class MelonMelonRenderer extends MobEntityRenderer<MelonMelonEntity, Melo
     public Identifier getTexture(MelonMelonEntity entity) {
         return TEXTURE;
     }
+
     @Override
     public void render(MelonMelonEntity livingEntity, float f, float g, MatrixStack matrixStack,
                        VertexConsumerProvider vertexConsumerProvider, int i) {
-        if(livingEntity.isBaby()) {
+        if (livingEntity.isBaby()) {
             matrixStack.scale(0.5f, 0.5f, 0.5f);
         } else {
             matrixStack.scale(1f, 1f, 1f);

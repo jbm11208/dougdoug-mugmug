@@ -14,8 +14,8 @@ import net.minecraft.util.Identifier;
 public final class ModItems {
 
     public static final Item BRICK_BRICK_SPAWN_EGG = registerSpawnEgg("brick_brick_spawn_egg", ModEntities.BRICK_BRICK);
-    public static final Item MUG_MUG_SPAWN_EGG     = registerSpawnEgg("mug_mug_spawn_egg",     ModEntities.MUG_MUG);
-    public static final Item COW_COW_SPAWN_EGG     = registerSpawnEgg("cow_cow_spawn_egg",     ModEntities.COW_COW);
+    public static final Item MUG_MUG_SPAWN_EGG = registerSpawnEgg("mug_mug_spawn_egg", ModEntities.MUG_MUG);
+    public static final Item COW_COW_SPAWN_EGG = registerSpawnEgg("cow_cow_spawn_egg", ModEntities.COW_COW);
     public static final Item MELON_MELON_SPAWN_EGG = registerSpawnEgg("melon_melon_spawn_egg", ModEntities.MELON_MELON);
 
     public static void registerAll() {
@@ -36,5 +36,6 @@ public final class ModItems {
         return Registry.register(Registries.ITEM, id, egg);
     }
 
-    private ModItems() {}
+    private ModItems() {
+    }
 }

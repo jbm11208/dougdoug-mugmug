@@ -20,10 +20,11 @@ public class BrickBrickRenderer extends MobEntityRenderer<BrickBrickEntity, Bric
     public Identifier getTexture(BrickBrickEntity entity) {
         return TEXTURE;
     }
+
     @Override
     public void render(BrickBrickEntity livingEntity, float f, float g, MatrixStack matrixStack,
                        VertexConsumerProvider vertexConsumerProvider, int i) {
-        if(livingEntity.isBaby()) {
+        if (livingEntity.isBaby()) {
             matrixStack.scale(0.5f, 0.5f, 0.5f);
         } else {
             matrixStack.scale(1f, 1f, 1f);

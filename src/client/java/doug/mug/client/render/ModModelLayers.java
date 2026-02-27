@@ -14,5 +14,6 @@ public final class ModModelLayers {
     public static final EntityModelLayer MELON_MELON =
             new EntityModelLayer(Identifier.of(DougDougMugMug.MOD_ID, "melon_melon"), "main");
 
-    private ModModelLayers() {}
+    private ModModelLayers() {
+    }
 }

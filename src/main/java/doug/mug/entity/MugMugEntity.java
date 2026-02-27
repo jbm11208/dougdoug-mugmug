@@ -24,6 +24,7 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
+
 import static doug.mug.registry.ModEntities.MUG_MUG;
 
 public class MugMugEntity extends AbstractHorseEntity {
@@ -43,27 +44,20 @@ public class MugMugEntity extends AbstractHorseEntity {
         this.goalSelector.add(0, new SwimGoal(this));
         this.goalSelector.add(1, new EscapeDangerGoal(this, 1.2D));
         this.goalSelector.add(2, new AnimalMateGoal(this, 1.0D));
-        this.goalSelector.add(3, new TemptGoal(this, 1.0D, stack -> stack.isOf(Items.SUSPICIOUS_STEW), false));
+        this.goalSelector.add(3, new TemptGoal(this, 1.0D, stack -> stack.isOf(Items.CLAY_BALL), false));
         this.goalSelector.add(4, new FollowParentGoal(this, 1.0D));
         this.goalSelector.add(5, new WanderAroundFarGoal(this, 1.0D));
         this.goalSelector.add(6, new LookAroundGoal(this));
     }
 
-    /**
-     * Hard-lock steering. Even if something mounts you via commands/mods,
-     * player control won’t work unless tame + saddle equipped.
-     * <p>
-     * NOTE: AbstractHorseEntity already does a similar check in its own
-     * getControllingPassenger(), but we keep this to match your intent.
-     */
-    public boolean hasSaddleEquipped() {
+    public boolean saddleNotEquipped() {
         return !this.hasStackEquipped(EquipmentSlot.CHEST);
     }
 
     @Override
     @Nullable
     public LivingEntity getControllingPassenger() {
-        if (!this.isTame() || this.hasSaddleEquipped()) {
+        if (!this.isTame() || this.saddleNotEquipped()) {
             return null;
         }
         Entity first = this.getFirstPassenger();
@@ -85,12 +79,31 @@ public class MugMugEntity extends AbstractHorseEntity {
 
         ItemStack held = player.getStackInHand(hand);
 
+        if (!held.isEmpty()) {
+            if (this.isBreedingItem(held)) {
+                int i = this.getBreedingAge();
+                if (!this.getWorld().isClient && i == 0 && this.canEat()) {
+                    this.eat(player, hand, held);
+                    this.lovePlayer(player);
+                    return ActionResult.SUCCESS;
+                }
+                if (this.isBaby()) {
+                    this.eat(player, hand, held);
+                    this.growUp(MugMugEntity.toGrowUpAge(-i), true);
+                    return ActionResult.success(this.getWorld().isClient);
+                }
+                if (this.getWorld().isClient) {
+                    return ActionResult.CONSUME;
+                }
+            }
+        }
+
         // 1) Taming with SUSPICIOUS_STEW
         if (!this.isTame()) {
             if (held.isOf(Items.SUSPICIOUS_STEW)) {
                 if (!this.getEntityWorld().isClient()) {
                     held.decrementUnlessCreative(1, player);
-                    this.bondWithPlayer(player); // exists in your pasted AbstractHorseEntity
+                    this.bondWithPlayer(player);
                 }
                 return ActionResult.SUCCESS;
             }
@@ -100,7 +113,7 @@ public class MugMugEntity extends AbstractHorseEntity {
         }
 
         // 2) “Saddling” with BOWL (internally equips a real saddle)
-        if (this.hasSaddleEquipped()) {
+        if (this.saddleNotEquipped()) {
             if (held.isOf(Items.BOWL.asItem())) {
                 if (!this.getEntityWorld().isClient()) {
                     held.decrementUnlessCreative(1, player);
@@ -122,7 +135,13 @@ public class MugMugEntity extends AbstractHorseEntity {
 
     @Override
     public boolean isBreedingItem(ItemStack stack) {
-        return stack.isOf(Items.SUSPICIOUS_STEW);
+        return stack.isOf(Items.CLAY_BALL);
+    }
+
+    @Override
+    public boolean canBreedWith(AnimalEntity other) {
+        if (other == this) return false;
+        return other instanceof MugMugEntity && this.isInLove() && other.isInLove();
     }
 
     @Override

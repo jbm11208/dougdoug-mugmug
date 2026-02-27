@@ -12,9 +12,11 @@ import net.minecraft.client.util.math.MatrixStack;
 
 public class MugMugModel<T extends MugMugEntity> extends SinglePartEntityModel<T> {
     private final ModelPart bb_main;
+
     public MugMugModel(ModelPart root) {
         this.bb_main = root.getChild("bb_main");
     }
+
     public static TexturedModelData getTexturedModelData() {
         ModelData modelData = new ModelData();
         ModelPartData modelPartData = modelData.getRoot();
@@ -274,9 +276,11 @@ public class MugMugModel<T extends MugMugEntity> extends SinglePartEntityModel<T
                 .uv(0, 5).cuboid(2.0F, 10.0F, -2.0F, 4.0F, 4.0F, 4.0F, new Dilation(0.0F)), ModelTransform.of(10.0F, -16.0F, 7.0F, 0.0F, 3.1416F, 0.0F));
         return TexturedModelData.of(modelData, 128, 128);
     }
+
     @Override
     public void setAngles(MugMugEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
     }
+
     @Override
     public void render(MatrixStack matrices, VertexConsumer vertexConsumer, int light, int overlay, int color) {
         bb_main.render(matrices, vertexConsumer, light, overlay, color);

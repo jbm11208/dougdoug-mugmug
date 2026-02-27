@@ -20,10 +20,11 @@ public class CowCowRenderer extends MobEntityRenderer<CowCowEntity, CowCowModel<
     public Identifier getTexture(CowCowEntity entity) {
         return TEXTURE;
     }
+
     @Override
     public void render(CowCowEntity livingEntity, float f, float g, MatrixStack matrixStack,
                        VertexConsumerProvider vertexConsumerProvider, int i) {
-        if(livingEntity.isBaby()) {
+        if (livingEntity.isBaby()) {
             matrixStack.scale(0.5f, 0.5f, 0.5f);
         } else {
             matrixStack.scale(1f, 1f, 1f);
