@@ -21,6 +21,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.world.World;
@@ -33,7 +34,7 @@ public class CowCowEntity extends AbstractHorseEntity {
     public CowCowEntity(EntityType<? extends AbstractHorseEntity> type, World world) {
         super(type, world);
     }
-
+    private boolean fullOfMilk = false;
     public static DefaultAttributeContainer.Builder createAttributes() {
         return AnimalEntity.createMobAttributes()
                 .add(EntityAttributes.GENERIC_MAX_HEALTH, 20.0D)
@@ -96,6 +97,20 @@ public class CowCowEntity extends AbstractHorseEntity {
                 if (this.getWorld().isClient) {
                     return ActionResult.CONSUME;
                 }
+            }
+            if (!this.fullOfMilk && held.isOf(Items.MILK_BUCKET) && !this.isBaby()) {
+                this.fullOfMilk = true;
+                held.decrementUnlessCreative(1, player);
+                player.playSound(SoundEvents.BLOCK_MUD_STEP, 1.0f, 1.0f);
+                player.getInventory().offerOrDrop(new ItemStack(Items.BUCKET));
+                return ActionResult.SUCCESS;
+            }
+            if (this.fullOfMilk && held.isOf(Items.BUCKET) && !this.isBaby()) {
+                this.fullOfMilk = false;
+                held.decrementUnlessCreative(1, player);
+                player.playSound(SoundEvents.ITEM_BUCKET_FILL, 1.0f, 1.0f);
+                player.getInventory().offerOrDrop(new ItemStack(Items.MILK_BUCKET));
+                return ActionResult.SUCCESS;
             }
         }
         // 1) Taming with MILK_BUCKET

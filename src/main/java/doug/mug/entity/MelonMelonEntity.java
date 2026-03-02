@@ -21,6 +21,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.world.World;
@@ -29,7 +30,7 @@ import org.jetbrains.annotations.Nullable;
 import static doug.mug.registry.ModEntities.MELON_MELON;
 
 public class MelonMelonEntity extends AbstractHorseEntity {
-
+    private boolean fullOfWater = false;
     public MelonMelonEntity(EntityType<? extends AbstractHorseEntity> type, World world) {
         super(type, world);
     }
@@ -96,6 +97,20 @@ public class MelonMelonEntity extends AbstractHorseEntity {
                 if (this.getWorld().isClient) {
                     return ActionResult.CONSUME;
                 }
+            }
+            if (!this.fullOfWater && held.isOf(Items.WATER_BUCKET) && !this.isBaby()) {
+                this.fullOfWater = true;
+                held.decrementUnlessCreative(1, player);
+                player.playSound(SoundEvents.ITEM_BUCKET_EMPTY, 1.0f, 1.0f);
+                player.getInventory().offerOrDrop(new ItemStack(Items.BUCKET));
+                return ActionResult.SUCCESS;
+            }
+            if (this.fullOfWater && held.isOf(Items.BUCKET) && !this.isBaby()) {
+                this.fullOfWater = false;
+                held.decrementUnlessCreative(1, player);
+                player.playSound(SoundEvents.ITEM_BUCKET_FILL, 1.0f, 1.0f);
+                player.getInventory().offerOrDrop(new ItemStack(Items.WATER_BUCKET));
+                return ActionResult.SUCCESS;
             }
         }
         // 1) Taming with MELON_SLICE
