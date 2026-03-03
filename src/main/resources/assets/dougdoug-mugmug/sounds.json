@@ -1,0 +1,14 @@
+{
+  "mug_death": {
+    "subtitle": "sounds.dougdoug-mugmug.mug_death",
+    "sounds": [
+      "dougdoug-mugmug:mug_death"
+    ]
+  },
+  "mug_hurt": {
+    "subtitle": "sounds.dougdoug-mugmug.mug_hurt",
+    "sounds": [
+      "dougdoug-mugmug:mug_hurt"
+    ]
+  }
+}
