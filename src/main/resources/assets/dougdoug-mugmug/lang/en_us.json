@@ -7,5 +7,8 @@
   "item.dougdoug-mugmug.brick_brick_spawn_egg": "BrickBrick Spawn Egg",
   "item.dougdoug-mugmug.mug_mug_spawn_egg": "MugMug Spawn Egg",
   "item.dougdoug-mugmug.cow_cow_spawn_egg": "CowCow Spawn Egg",
-  "item.dougdoug-mugmug.melon_melon_spawn_egg": "MelonMelon Spawn Egg"
+  "item.dougdoug-mugmug.melon_melon_spawn_egg": "MelonMelon Spawn Egg",
+
+  "block.dougdoug-mugmug.brickbricktrophy": "BrickBrick Trophy",
+  "block.dougdoug-mugmug.mugmugtrophy": "MugMug Trophy"
 }

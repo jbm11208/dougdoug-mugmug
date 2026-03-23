@@ -18,6 +18,10 @@ repositories {
 	// for more information about repositories.
 }
 
+fabricApi {
+    configureDataGeneration()
+}
+
 loom {
 	splitEnvironmentSourceSets()
 

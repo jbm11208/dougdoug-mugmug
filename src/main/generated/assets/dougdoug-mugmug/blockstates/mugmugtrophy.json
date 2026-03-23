@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "dougdoug-mugmug:block/mugmugtrophy",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "dougdoug-mugmug:block/mugmugtrophy"
+    },
+    "facing=south": {
+      "model": "dougdoug-mugmug:block/mugmugtrophy",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "dougdoug-mugmug:block/mugmugtrophy",
+      "y": 270
+    }
+  }
+}

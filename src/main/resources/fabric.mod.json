@@ -18,6 +18,9 @@
 		"main": [
 			"doug.mug.DougDougMugMug"
 		],
+      "fabric-datagen": [
+        "doug.mug.DougDougMugMugDataGenerator"
+      ],
 		"client": [
 			"doug.mug.DougDougMugMugClient"
 		]

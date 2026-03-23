@@ -1,5 +1,6 @@
 package doug.mug;
 
+import doug.mug.block.ModBlocks;
 import doug.mug.registry.ModEntities;
 import doug.mug.registry.ModItems;
 import net.fabricmc.api.ModInitializer;
@@ -17,7 +18,7 @@ public class DougDougMugMug implements ModInitializer {
         ModEntities.registerAll();
         ModItems.registerAll();
         ModSounds.registerSounds();
-
-        LOGGER.info("DougDoug MugMug initialized: registered entities, spawn eggs, and sounds.");
+        ModBlocks.registerModBlocks();
+        LOGGER.info("DougDoug MugMug initialized: registered entities, spawn eggs, sounds, and blocks.");
     }
 }
