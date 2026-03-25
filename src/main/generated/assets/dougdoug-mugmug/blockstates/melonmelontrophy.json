@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "dougdoug-mugmug:block/melonmelontrophy",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "dougdoug-mugmug:block/melonmelontrophy"
+    },
+    "facing=south": {
+      "model": "dougdoug-mugmug:block/melonmelontrophy",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "dougdoug-mugmug:block/melonmelontrophy",
+      "y": 270
+    }
+  }
+}

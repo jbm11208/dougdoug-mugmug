@@ -19,11 +19,10 @@ public class ModBlocks {
     public static final Block MUG_TROPHY = registerBlock("mugmugtrophy",
             new MugTrophyBlock(AbstractBlock.Settings.create().nonOpaque()));
 
-
-
-    private static Block registerBlockWithoutBlockItem(String name, Block block) {
-        return Registry.register(Registries.BLOCK, Identifier.of(DougDougMugMug.MOD_ID, name), block);
-    }
+    public static final Block COW_TROPHY = registerBlock("cowcowtrophy",
+            new CowTrophyBlock(AbstractBlock.Settings.create().nonOpaque()));
+    public static final Block MELON_TROPHY = registerBlock("melonmelontrophy",
+            new MelonTrophyBlock(AbstractBlock.Settings.create().nonOpaque()));
 
     private static Block registerBlock(String name, Block block) {
         registerBlockItem(name, block);
@@ -41,6 +40,8 @@ public class ModBlocks {
         ItemGroupEvents.modifyEntriesEvent(ItemGroups.BUILDING_BLOCKS).register(entries -> {
             entries.add(ModBlocks.MUG_TROPHY);
             entries.add(ModBlocks.BRICK_TROPHY);
+            entries.add(ModBlocks.COW_TROPHY);
+            entries.add(ModBlocks.MELON_TROPHY);
         });
     }
 }
