@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 public class DougDougMugMug implements ModInitializer {
     public static final String MOD_ID = "dougdoug-mugmug";
     public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
+    public static final doug.mug.MugMugConfig CONFIG = doug.mug.MugMugConfig.createAndLoad();
 
     @Override
     public void onInitialize() {

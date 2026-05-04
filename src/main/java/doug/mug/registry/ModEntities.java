@@ -15,6 +15,7 @@ import net.minecraft.registry.Registry;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.Heightmap;
 import net.minecraft.world.biome.BiomeKeys;
+import doug.mug.MugMugConfigModel;
 
 public final class ModEntities {
 
@@ -70,10 +71,10 @@ public final class ModEntities {
     }
 
     private static void registerBiomeSpawns() {
-        BiomeModifications.addSpawn(BiomeSelectors.includeByKey(BiomeKeys.STONY_SHORE, BiomeKeys.STONY_PEAKS, BiomeKeys.BADLANDS), SpawnGroup.CREATURE, BRICK_BRICK, 5, 2, 4);
-        BiomeModifications.addSpawn(BiomeSelectors.includeByKey(BiomeKeys.OCEAN, BiomeKeys.DEEP_OCEAN, BiomeKeys.RIVER), SpawnGroup.CREATURE, MUG_MUG, 8, 2, 4);
-        BiomeModifications.addSpawn(BiomeSelectors.includeByKey(BiomeKeys.PLAINS, BiomeKeys.FOREST, BiomeKeys.SAVANNA, BiomeKeys.TAIGA), SpawnGroup.CREATURE, COW_COW, 6, 1, 3);
-        BiomeModifications.addSpawn(BiomeSelectors.includeByKey(BiomeKeys.JUNGLE, BiomeKeys.SPARSE_JUNGLE, BiomeKeys.BAMBOO_JUNGLE), SpawnGroup.CREATURE, MELON_MELON, 7, 2, 4);
+        BiomeModifications.addSpawn(BiomeSelectors.includeByKey(BiomeKeys.STONY_SHORE, BiomeKeys.STONY_PEAKS, BiomeKeys.BADLANDS), SpawnGroup.CREATURE, BRICK_BRICK, DougDougMugMug.CONFIG.BrickBrickSpawnRate(), DougDougMugMug.CONFIG.BrickMinGroupSize(), DougDougMugMug.CONFIG.BrickMaxGroupSize());
+        BiomeModifications.addSpawn(BiomeSelectors.includeByKey(BiomeKeys.OCEAN, BiomeKeys.DEEP_OCEAN, BiomeKeys.RIVER, BiomeKeys.BEACH), SpawnGroup.CREATURE, MUG_MUG, DougDougMugMug.CONFIG.MugMugSpawnRate(), DougDougMugMug.CONFIG.MugMinGroupSize(), DougDougMugMug.CONFIG.MugMaxGroupSize());
+        BiomeModifications.addSpawn(BiomeSelectors.includeByKey(BiomeKeys.PLAINS, BiomeKeys.FOREST, BiomeKeys.SAVANNA, BiomeKeys.TAIGA), SpawnGroup.CREATURE, COW_COW, DougDougMugMug.CONFIG.CowCowSpawnRate(), DougDougMugMug.CONFIG.CowMinGroupSize(), DougDougMugMug.CONFIG.CowMaxGroupSize());
+        BiomeModifications.addSpawn(BiomeSelectors.includeByKey(BiomeKeys.JUNGLE, BiomeKeys.SPARSE_JUNGLE, BiomeKeys.BAMBOO_JUNGLE), SpawnGroup.CREATURE, MELON_MELON, DougDougMugMug.CONFIG.MelonMelonSpawnRate(), DougDougMugMug.CONFIG.MelonMinGroupSize(), DougDougMugMug.CONFIG.MelonMaxGroupSize());
     }
 
     private ModEntities() {
