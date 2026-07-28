@@ -3,7 +3,8 @@
 	"credit": "Made with Blockbench",
 	"texture_size": [128, 128],
 	"textures": {
-		"0": "dougdoug-mugmug:block/brickbricktrophy"
+		"0": "dougdoug-mugmug:block/brickbricktrophy",
+        "particle": "dougdoug-mugmug:block/brickbricktrophy"
 	},
 	"elements": [
 		{
