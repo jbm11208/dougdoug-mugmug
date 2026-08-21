@@ -12,6 +12,8 @@ import net.minecraft.entity.*;
 import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
+import net.minecraft.registry.RegistryKey;
+import net.minecraft.registry.RegistryKeys;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.Heightmap;
 import net.minecraft.world.biome.BiomeKeys;
@@ -19,19 +21,28 @@ import doug.mug.MugMugConfigModel;
 
 public final class ModEntities {
 
+    private static final RegistryKey<EntityType<?>> BRICK_KEY =
+            RegistryKey.of(RegistryKeys.ENTITY_TYPE, Identifier.of(DougDougMugMug.MOD_ID, "brick_brick"));
+    private static final RegistryKey<EntityType<?>> MUG_KEY =
+            RegistryKey.of(RegistryKeys.ENTITY_TYPE, Identifier.of(DougDougMugMug.MOD_ID, "mug_mug"));
+    private static final RegistryKey<EntityType<?>> COW_KEY =
+            RegistryKey.of(RegistryKeys.ENTITY_TYPE, Identifier.of(DougDougMugMug.MOD_ID, "cow_cow"));
+    private static final RegistryKey<EntityType<?>> MELON_KEY =
+            RegistryKey.of(RegistryKeys.ENTITY_TYPE, Identifier.of(DougDougMugMug.MOD_ID, "melon_melon"));
+
     public static final EntityType<BrickBrickEntity> BRICK_BRICK = Registry.register(
             Registries.ENTITY_TYPE,
             Identifier.of(DougDougMugMug.MOD_ID, "brick_brick"),
             EntityType.Builder.create(BrickBrickEntity::new, SpawnGroup.CREATURE)
                     .dimensions(1.0f, 2.0f)
-                    .build());
+                    .build(BRICK_KEY));
 
     public static final EntityType<MugMugEntity> MUG_MUG = Registry.register(
             Registries.ENTITY_TYPE,
             Identifier.of(DougDougMugMug.MOD_ID, "mug_mug"),
             EntityType.Builder.create(MugMugEntity::new, SpawnGroup.CREATURE)
                     .dimensions(2.8f, 2.2f)
-                    .build()
+                    .build(MUG_KEY)
     );
 
     public static final EntityType<CowCowEntity> COW_COW = Registry.register(
@@ -39,7 +50,7 @@ public final class ModEntities {
             Identifier.of(DougDougMugMug.MOD_ID, "cow_cow"),
             EntityType.Builder.create(CowCowEntity::new, SpawnGroup.CREATURE)
                     .dimensions(2.8f, 2.2f)
-                    .build()
+                    .build(COW_KEY)
     );
 
     public static final EntityType<MelonMelonEntity> MELON_MELON = Registry.register(
@@ -47,7 +58,7 @@ public final class ModEntities {
             Identifier.of(DougDougMugMug.MOD_ID, "melon_melon"),
             EntityType.Builder.create(MelonMelonEntity::new, SpawnGroup.CREATURE)
                     .dimensions(2.8f, 2.2f)
-                    .build()
+                    .build(MELON_KEY)
     );
 
     public static void registerAll() {

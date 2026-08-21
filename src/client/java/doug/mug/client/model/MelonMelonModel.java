@@ -4,16 +4,18 @@
 
 package doug.mug.client.model;
 
+import doug.mug.client.render.state.MelonMelonRenderState;
 import doug.mug.entity.MelonMelonEntity;
 import net.minecraft.client.model.*;
 import net.minecraft.client.render.VertexConsumer;
-import net.minecraft.client.render.entity.model.SinglePartEntityModel;
+import net.minecraft.client.render.entity.model.EntityModel;
 import net.minecraft.client.util.math.MatrixStack;
 
-public class MelonMelonModel<T extends MelonMelonEntity> extends SinglePartEntityModel<T> {
+public class MelonMelonModel extends EntityModel<MelonMelonRenderState> {
     private final ModelPart bb_main;
 
     public MelonMelonModel(ModelPart root) {
+        super(root);
         this.bb_main = root.getChild("bb_main");
     }
 
@@ -103,7 +105,7 @@ public class MelonMelonModel<T extends MelonMelonEntity> extends SinglePartEntit
                 .uv(10, 7).cuboid(-14.0F, -22.0F, -23.0F, 2.0F, 14.0F, 2.0F, new Dilation(0.0F))
                 .uv(22, 5).cuboid(-14.0F, -8.0F, -21.0F, 2.0F, 2.0F, 2.0F, new Dilation(0.0F))
                 .uv(110, 43).cuboid(-12.0F, -8.0F, -21.0F, 4.0F, 2.0F, 2.0F, new Dilation(0.0F))
-                .uv(108, 39).cuboid(-10.0F, -34.0F, -5.0F, 2.0F, 8.0F, 2.0F, new Dilation(0.0F)), ModelTransform.pivot(0.0F, 24.0F, 0.0F));
+                .uv(108, 39).cuboid(-10.0F, -34.0F, -5.0F, 2.0F, 8.0F, 2.0F, new Dilation(0.0F)), ModelTransform.of(0.0F, 24.0F, 0.0F, 0.0F, 0.0F, 0.0F));
 
         bb_main.addChild("cube_r1", ModelPartBuilder.create().uv(106, 40).cuboid(-8.0F, 8.0F, -2.0F, 2.0F, 2.0F, 4.0F, new Dilation(0.0F))
                 .uv(14, 9).cuboid(-8.0F, 8.0F, 2.0F, 2.0F, 2.0F, 2.0F, new Dilation(0.0F))
@@ -307,19 +309,5 @@ public class MelonMelonModel<T extends MelonMelonEntity> extends SinglePartEntit
 
         bb_main.addChild("cube_r7", ModelPartBuilder.create().uv(10, 5).cuboid(8.0F, 2.0F, -6.0F, 4.0F, 2.0F, 8.0F, new Dilation(0.0F)), ModelTransform.of(10.0F, -34.0F, 9.0F, 0.0F, 3.1416F, 0.0F));
         return TexturedModelData.of(modelData, 128, 128);
-    }
-
-    @Override
-    public void setAngles(MelonMelonEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-    }
-
-    @Override
-    public void render(MatrixStack matrices, VertexConsumer vertexConsumer, int light, int overlay, int color) {
-        bb_main.render(matrices, vertexConsumer, light, overlay, color);
-    }
-
-    @Override
-    public ModelPart getPart() {
-        return bb_main;
     }
 }

@@ -2,10 +2,7 @@ package doug.mug.entity;
 
 import doug.mug.sound.ModSounds;
 import net.minecraft.block.Blocks;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.EquipmentSlot;
-import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.*;
 import net.minecraft.entity.ai.goal.AnimalMateGoal;
 import net.minecraft.entity.ai.goal.EscapeDangerGoal;
 import net.minecraft.entity.ai.goal.FollowParentGoal;
@@ -40,8 +37,9 @@ public class MelonMelonEntity extends AbstractHorseEntity {
 
     public static DefaultAttributeContainer.Builder createAttributes() {
         return AnimalEntity.createMobAttributes()
-                .add(EntityAttributes.GENERIC_MAX_HEALTH, 20.0D)
-                .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.25D);
+                .add(EntityAttributes.MAX_HEALTH, 20.0D)
+                .add(EntityAttributes.MOVEMENT_SPEED, 0.25D)
+                .add(EntityAttributes.TEMPT_RANGE, 64.0D);
     }
 
     @Override
@@ -97,7 +95,7 @@ public class MelonMelonEntity extends AbstractHorseEntity {
         if (!held.isEmpty()) {
             if (this.isBreedingItem(held)) {
                 int i = this.getBreedingAge();
-                if (!this.getWorld().isClient && i == 0 && this.canEat()) {
+                if (!this.getEntityWorld().isClient() && i == 0 && this.canEat()) {
                     this.eat(player, hand, held);
                     this.lovePlayer(player);
                     return ActionResult.SUCCESS;
@@ -105,9 +103,9 @@ public class MelonMelonEntity extends AbstractHorseEntity {
                 if (this.isBaby()) {
                     this.eat(player, hand, held);
                     this.growUp(MelonMelonEntity.toGrowUpAge(-i), true);
-                    return ActionResult.success(this.getWorld().isClient);
+                    return ActionResult.SUCCESS;
                 }
-                if (this.getWorld().isClient) {
+                if (this.getEntityWorld().isClient()) {
                     return ActionResult.CONSUME;
                 }
             }
@@ -174,6 +172,6 @@ public class MelonMelonEntity extends AbstractHorseEntity {
 
     @Override
     public PassiveEntity createChild(ServerWorld world, PassiveEntity mate) {
-        return MELON_MELON.create(world);
+        return MELON_MELON.create(world, SpawnReason.BREEDING);
     }
 }
