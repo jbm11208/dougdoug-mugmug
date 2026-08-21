@@ -1,60 +1,59 @@
 package doug.mug.entity;
 
 import doug.mug.sound.ModSounds;
-import net.minecraft.block.Blocks;
-import net.minecraft.entity.*;
-import net.minecraft.entity.ai.goal.AnimalMateGoal;
-import net.minecraft.entity.ai.goal.EscapeDangerGoal;
-import net.minecraft.entity.ai.goal.FollowParentGoal;
-import net.minecraft.entity.ai.goal.LookAroundGoal;
-import net.minecraft.entity.ai.goal.SwimGoal;
-import net.minecraft.entity.ai.goal.TemptGoal;
-import net.minecraft.entity.ai.goal.WanderAroundFarGoal;
-import net.minecraft.entity.attribute.DefaultAttributeContainer;
-import net.minecraft.entity.attribute.EntityAttributes;
-import net.minecraft.entity.damage.DamageSource;
-import net.minecraft.entity.passive.AbstractHorseEntity;
-import net.minecraft.entity.passive.AnimalEntity;
-import net.minecraft.entity.passive.PassiveEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.sound.SoundEvent;
-import net.minecraft.sound.SoundEvents;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.Hand;
-import net.minecraft.world.World;
+import net.minecraft.world.entity.*;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.entity.ai.goal.BreedGoal;
+import net.minecraft.world.entity.ai.goal.PanicGoal;
+import net.minecraft.world.entity.ai.goal.FollowParentGoal;
+import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
+import net.minecraft.world.entity.ai.goal.FloatGoal;
+import net.minecraft.world.entity.ai.goal.TemptGoal;
+import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.animal.equine.AbstractHorse;
+import net.minecraft.world.entity.animal.Animal;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 
 import static doug.mug.registry.ModEntities.MELON_MELON;
 
-public class MelonMelonEntity extends AbstractHorseEntity {
+public class MelonMelonEntity extends AbstractHorse {
     private boolean fullOfWater = false;
-    public MelonMelonEntity(EntityType<? extends AbstractHorseEntity> type, World world) {
+    public MelonMelonEntity(EntityType<? extends AbstractHorse> type, Level world) {
         super(type, world);
     }
 
-    public static DefaultAttributeContainer.Builder createAttributes() {
-        return AnimalEntity.createMobAttributes()
-                .add(EntityAttributes.MAX_HEALTH, 20.0D)
-                .add(EntityAttributes.MOVEMENT_SPEED, 0.25D)
-                .add(EntityAttributes.TEMPT_RANGE, 64.0D);
+    public static AttributeSupplier.Builder createAttributes() {
+        return Animal.createMobAttributes()
+                .add(Attributes.MAX_HEALTH, 20.0D)
+                .add(Attributes.MOVEMENT_SPEED, 0.25D)
+                .add(Attributes.TEMPT_RANGE, 64.0D);
     }
 
     @Override
-    protected void initGoals() {
-        this.goalSelector.add(0, new SwimGoal(this));
-        this.goalSelector.add(1, new EscapeDangerGoal(this, 1.2D));
-        this.goalSelector.add(2, new AnimalMateGoal(this, 1.0D));
-        this.goalSelector.add(3, new TemptGoal(this, 1.0D, stack -> stack.isOf(Items.CLAY_BALL), false));
-        this.goalSelector.add(4, new FollowParentGoal(this, 1.0D));
-        this.goalSelector.add(5, new WanderAroundFarGoal(this, 1.0D));
-        this.goalSelector.add(6, new LookAroundGoal(this));
+    protected void registerGoals() {
+        this.goalSelector.addGoal(0, new FloatGoal(this));
+        this.goalSelector.addGoal(1, new PanicGoal(this, 1.2D));
+        this.goalSelector.addGoal(2, new BreedGoal(this, 1.0D));
+        this.goalSelector.addGoal(3, new TemptGoal(this, 1.0D, stack -> stack.is(Items.CLAY_BALL), false));
+        this.goalSelector.addGoal(4, new FollowParentGoal(this, 1.0D));
+        this.goalSelector.addGoal(5, new WaterAvoidingRandomStrollGoal(this, 1.0D));
+        this.goalSelector.addGoal(6, new RandomLookAroundGoal(this));
     }
 
     public boolean saddleNotEquipped() {
-        return !this.hasStackEquipped(EquipmentSlot.CHEST);
+        return !this.hasItemInSlot(EquipmentSlot.CHEST);
     }
 
     @Override
@@ -70,108 +69,108 @@ public class MelonMelonEntity extends AbstractHorseEntity {
     @Override
     @Nullable
     public LivingEntity getControllingPassenger() {
-        if (!this.isTame() || this.saddleNotEquipped()) {
+        if (!this.isTamed() || this.saddleNotEquipped()) {
             return null;
         }
         Entity first = this.getFirstPassenger();
-        return first instanceof PlayerEntity p ? p : null;
+        return first instanceof Player p ? p : null;
     }
 
     @Override
-    public ActionResult interactMob(PlayerEntity player, Hand hand) {
+    public InteractionResult mobInteract(Player player, InteractionHand hand) {
         // vanilla early exit
-        if (this.hasPassengers() || this.isBaby()) {
-            return super.interactMob(player, hand);
+        if (this.isVehicle() || this.isBaby()) {
+            return super.mobInteract(player, hand);
         }
 
         // Sneak-right click opens the horse inventory ONLY if tamed (vanilla behavior)
-        if (this.isTame() && player.shouldCancelInteraction()) {
-            this.openInventory(player);
-            return ActionResult.SUCCESS;
+        if (this.isTamed() && player.isSecondaryUseActive()) {
+            this.openCustomInventoryScreen(player);
+            return InteractionResult.SUCCESS;
         }
 
-        ItemStack held = player.getStackInHand(hand);
+        ItemStack held = player.getItemInHand(hand);
 
         if (!held.isEmpty()) {
-            if (this.isBreedingItem(held)) {
-                int i = this.getBreedingAge();
-                if (!this.getEntityWorld().isClient() && i == 0 && this.canEat()) {
-                    this.eat(player, hand, held);
-                    this.lovePlayer(player);
-                    return ActionResult.SUCCESS;
+            if (this.isFood(held)) {
+                int i = this.getAge();
+                if (!this.level().isClientSide() && i == 0 && this.canFallInLove()) {
+                    this.usePlayerItem(player, hand, held);
+                    this.setInLove(player);
+                    return InteractionResult.SUCCESS;
                 }
                 if (this.isBaby()) {
-                    this.eat(player, hand, held);
-                    this.growUp(MelonMelonEntity.toGrowUpAge(-i), true);
-                    return ActionResult.SUCCESS;
+                    this.usePlayerItem(player, hand, held);
+                    this.ageUp(MelonMelonEntity.getSpeedUpSecondsWhenFeeding(-i), true);
+                    return InteractionResult.SUCCESS;
                 }
-                if (this.getEntityWorld().isClient()) {
-                    return ActionResult.CONSUME;
+                if (this.level().isClientSide()) {
+                    return InteractionResult.CONSUME;
                 }
             }
-            if (!this.fullOfWater && held.isOf(Items.WATER_BUCKET) && !this.isBaby()) {
+            if (!this.fullOfWater && held.is(Items.WATER_BUCKET) && !this.isBaby()) {
                 this.fullOfWater = true;
-                held.decrementUnlessCreative(1, player);
-                player.playSound(SoundEvents.ITEM_BUCKET_EMPTY, 1.0f, 1.0f);
-                player.getInventory().offerOrDrop(new ItemStack(Items.BUCKET));
-                return ActionResult.SUCCESS;
+                held.consume(1, player);
+                player.playSound(SoundEvents.BUCKET_EMPTY, 1.0f, 1.0f);
+                player.getInventory().placeItemBackInInventory(new ItemStack(Items.BUCKET));
+                return InteractionResult.SUCCESS;
             }
-            if (this.fullOfWater && held.isOf(Items.BUCKET) && !this.isBaby()) {
+            if (this.fullOfWater && held.is(Items.BUCKET) && !this.isBaby()) {
                 this.fullOfWater = false;
-                held.decrementUnlessCreative(1, player);
-                player.playSound(SoundEvents.ITEM_BUCKET_FILL, 1.0f, 1.0f);
-                player.getInventory().offerOrDrop(new ItemStack(Items.WATER_BUCKET));
-                return ActionResult.SUCCESS;
+                held.consume(1, player);
+                player.playSound(SoundEvents.BUCKET_FILL, 1.0f, 1.0f);
+                player.getInventory().placeItemBackInInventory(new ItemStack(Items.WATER_BUCKET));
+                return InteractionResult.SUCCESS;
             }
         }
         // 1) Taming with MELON_SLICE
-        if (!this.isTame()) {
-            if (held.isOf(Items.MELON_SLICE)) {
-                if (!this.getEntityWorld().isClient()) {
-                    held.decrementUnlessCreative(1, player);
-                    this.bondWithPlayer(player);
+        if (!this.isTamed()) {
+            if (held.is(Items.MELON_SLICE)) {
+                if (!this.level().isClientSide()) {
+                    held.consume(1, player);
+                    this.tameWithName(player);
                 }
-                return ActionResult.SUCCESS;
+                return InteractionResult.SUCCESS;
             }
 
             // IMPORTANT: do NOT call super here, or vanilla will mount them anyway.
-            return ActionResult.PASS;
+            return InteractionResult.PASS;
         }
 
         // 2) “Saddling” with MELON (internally equips a real saddle)
         if (this.saddleNotEquipped()) {
-            if (held.isOf(Blocks.MELON.asItem())) {
-                if (!this.getEntityWorld().isClient()) {
-                    held.decrementUnlessCreative(1, player);
+            if (held.is(Blocks.MELON.asItem())) {
+                if (!this.level().isClientSide()) {
+                    held.consume(1, player);
 
                     // Equip a real saddle so vanilla GUI/control logic works
-                    this.equipStack(EquipmentSlot.CHEST, new ItemStack(Items.SADDLE));
+                    this.setItemSlot(EquipmentSlot.CHEST, new ItemStack(Items.SADDLE));
                 }
-                return ActionResult.SUCCESS;
+                return InteractionResult.SUCCESS;
             }
 
             // Not saddled yet: no mounting, no super()
-            return ActionResult.PASS;
+            return InteractionResult.PASS;
         }
 
         // 3) Mounting only after tame + saddle equipped
-        this.putPlayerOnBack(player);
-        return ActionResult.SUCCESS;
+        this.doPlayerRide(player);
+        return InteractionResult.SUCCESS;
     }
 
     @Override
-    public boolean isBreedingItem(ItemStack stack) {
-        return stack.isOf(Items.CLAY_BALL);
+    public boolean isFood(ItemStack stack) {
+        return stack.is(Items.CLAY_BALL);
     }
 
     @Override
-    public boolean canBreedWith(AnimalEntity other) {
+    public boolean canMate(Animal other) {
         if (other == this) return false;
         return other instanceof MelonMelonEntity && this.isInLove() && other.isInLove();
     }
 
     @Override
-    public PassiveEntity createChild(ServerWorld world, PassiveEntity mate) {
-        return MELON_MELON.create(world, SpawnReason.BREEDING);
+    public AgeableMob getBreedOffspring(ServerLevel world, AgeableMob mate) {
+        return MELON_MELON.create(world, EntitySpawnReason.BREEDING);
     }
 }

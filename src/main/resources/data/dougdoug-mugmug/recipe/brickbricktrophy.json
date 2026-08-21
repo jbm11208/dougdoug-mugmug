@@ -6,12 +6,8 @@
     "###"
   ],
   "key": {
-    "#": {
-      "item": "minecraft:brick"
-    },
-    "B": {
-      "item": "minecraft:bowl"
-    }
+    "#": "minecraft:brick",
+    "B": "minecraft:bowl"
   },
   "result": {
     "id": "dougdoug-mugmug:brickbricktrophy",
